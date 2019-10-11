@@ -78,7 +78,7 @@ export default {
                     color:#409eff;
                 }
             }
-
+           
             /deep/ .nuxt-link-exact-active{
                 background:#409eff;
                 color:#fff!important;
