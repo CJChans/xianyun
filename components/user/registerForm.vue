@@ -58,6 +58,17 @@
 <script>
 export default {
     data(){
+        var validatePass = (rule, value, callback) => {
+        if (value === '') {
+            // new Error js原生的错误对象
+          callback(new Error('请再次输入密码'));
+        } else if(value!=this.form.password) {
+             callback(new Error('两次输入密码不一致!'));
+        }else{
+            // 验证通过
+            callback()
+        }
+      };
         return {
             // 表单数据
             form: {
@@ -68,7 +79,23 @@ export default {
                 checkPassword:""
             },
             // 表单规则
-            rules: {},
+            rules: {
+                 username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                nickname: [
+                    { required: true, message: '请输入昵称', trigger: 'blur' }
+                ],
+                captcha: [
+                    { required: true, message: '请输入验证码', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' }
+                ],
+                checkPassword: [
+                    { validator: validatePass, trigger: 'blur' }
+                ],
+            },
         }
     },
     methods: {
@@ -81,6 +108,14 @@ export default {
         // 注册
         handleRegSubmit(){
            console.log(this.form)
+           this.$refs.form.validate((valid) => {
+            if (valid) {
+                alert('注册成功');
+            } else {
+                alert('信息有误，请重新注册');
+                return false;
+            }
+        });
         }
     }
 }
