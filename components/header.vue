@@ -39,7 +39,9 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人中心</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item>
+                            <span @click="handleLogout">退出</span>
+                        </el-dropdown-item>
                        
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -51,7 +53,15 @@
 export default {
     methods: {
         // 用户退出
-        handleLogout(){},
+        handleLogout(){
+             // 清空用户数据
+
+            // vuex不能通过直接赋值方式来修改state的值
+            // this.$store.state.user.username = data.user.nickname;
+            // 通过调用mutation下的方法掉修改state的值,commit方法调用mutation的方法
+            // 非常类似于$emit
+            this.$store.commit("user/setUserInfo", {})
+        },
     }
 }
 </script>
