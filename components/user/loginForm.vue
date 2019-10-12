@@ -57,7 +57,7 @@ export default {
     methods: {
         // 提交登录
         handleLoginSubmit(){
-           console.log(this.form)
+        //    console.log(this.form)
            this.$refs.form.validate( async valid =>{
              // valid是表单验证的结果
              if(valid){
@@ -69,7 +69,8 @@ export default {
 
                 if(res.status === 200){
                   this.$message.success("登录成功")
-                  console.log(res.data)
+                  this.$router.push("/")
+                //   console.log(res.data)
                   const data = res.data;
                        // 把用户信息token保存到本地，在头部组件中显示用户数据
                        
