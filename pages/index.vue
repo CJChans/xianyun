@@ -74,16 +74,23 @@ export default {
       }
     },
 
-    mounted(){
+    async mounted(){
       // 请求轮播图数据
-      this.$axios({
-        url:"/scenics/banners"
-      }).then(res=>{
-        // console.log(res.data)
-        const {data} = res.data
-        this.banners = data
+    //   this.$axios({
+    //     url:"/scenics/banners"
+    //   }).then(res=>{
         
-      })
+    //     const {data} = res.data
+    //     this.banners = data
+        
+    //   })
+
+        const res = await this.$axios({
+            url:"/scenics/banners"
+        });
+
+        const {data} = res.data;
+        this.banners = data;
     }
 }
 </script>
