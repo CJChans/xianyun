@@ -19,6 +19,7 @@
                 placeholder="请搜索出发城市"
                 @select="handleDepartSelect"
                 v-model="form.departCity"
+                @blur="handleDepartBlur"
                 class="el-autocomplete"
                 ></el-autocomplete>
             </el-form-item>
@@ -106,9 +107,22 @@ export default {
                     v.value = v.name.replace("市", ""); // 乌鲁市齐市
                     return v;
                 })
+
+                // 把newData赋值给data中cities
+                this.cities = newData;
+
                 // 展示到下拉列表
                 cb(newData)
             })
+        },
+
+         // 出发城市失去焦点时候默认选中第一个
+        handleDepartBlur(){
+            // 默认选中城市列表第一个
+            if(this.cities.length > 0){
+                this.form.departCity = this.cities[0].value;
+                this.form.departCode = this.cities[0].sort;
+            }  
         },
 
         // 目标城市输入框获得焦点时触发
