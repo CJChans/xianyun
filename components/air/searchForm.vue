@@ -123,7 +123,8 @@ export default {
        
         // 出发城市下拉选择时触发
         handleDepartSelect(item) {
-            
+            this.form.departCity = item.value;
+            this.form.departCode = item.sort;
         },
 
         // 目标城市下拉选择时触发
@@ -143,7 +144,8 @@ export default {
 
         // 提交表单是触发
         handleSubmit(){
-           
+           console.log(this.form)
+
         }
     },
     mounted() {
