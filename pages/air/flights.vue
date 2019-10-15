@@ -19,6 +19,7 @@
                 :item="item"/>
 
                 <el-pagination
+                v-if="flightsData.length>0"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="pageIndex"
@@ -27,6 +28,10 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="flightsData.total">
                 </el-pagination>
+
+                <div v-if="flightsData.length===0 && !loading" style="padding: 50px; text-align:center">
+                    暂无该航班的数据   请重新选择
+                </div>
             </div>
 
             <!-- 侧边栏 -->
@@ -60,6 +65,9 @@ export default {
             pageIndex: 1,
             // 当前的条数
             pageSize: 5,
+
+            //判断是否在加载
+            loading:true,
         }
     },
 
@@ -72,6 +80,8 @@ export default {
             console.log(res.data)
             const {flights} = res.data
             this.flightsData = flights
+            //请求完毕
+            this.loading = false;
              // 第一页的数据
             this.dataList = this.flightsData.slice(0, this.pageSize)
         })
