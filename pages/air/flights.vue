@@ -55,6 +55,10 @@ export default {
             const {flights} = res.data
             this.flightsData = flights
         })
+    },
+
+    methods:{
+        
     }
 }
 </script>
