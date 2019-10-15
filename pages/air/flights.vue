@@ -14,7 +14,7 @@
                 
                 
                 <!-- 航班信息 -->
-                <FlightsItem v-for="(item,index) in flightsData"
+                <FlightsItem v-for="(item,index) in dataList"
                 :key="index"
                 :item="item"/>
 
@@ -53,6 +53,9 @@ export default {
             // 请求机票列表返回的总数据，包含了flights,info, options,total
             flightsData:[],
 
+             // 从flights总列表数据中切割出来数组列表
+            dataList: [],
+
              // 当前的页数
             pageIndex: 1,
             // 当前的条数
@@ -69,6 +72,8 @@ export default {
             console.log(res.data)
             const {flights} = res.data
             this.flightsData = flights
+             // 第一页的数据
+            this.dataList = this.flightsData.slice(0, this.pageSize)
         })
     },
 
@@ -78,6 +83,16 @@ export default {
         },
         // 页数切换时候触发, val是当前的页数
         handleCurrentChange(val){
+             // 修改当前的页数
+            this.pageIndex = val;
+            // 修改机票列表
+            // 0, 5
+            // 5, 10
+            // 10, 15
+            this.dataList = this.flightsData.slice(
+                (this.pageIndex - 1 ) * this.pageSize,
+                this.pageIndex * this.pageSize
+            )
         }
     }
 }
