@@ -31,7 +31,12 @@
             <el-row type="flex"  justify="space-between" align="middle">
                 <el-col :span="4">低价推荐</el-col>
                 <el-col :span="20">
-                    <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
+
+                    <el-row type="flex"
+                     justify="space-between"
+                    align="middle"
+                     class="flight-sell">
+
                         <el-col :span="16" class="flight-sell-left">
                             <span>经济舱</span> | 上海一诺千金航空服务有限公司
                         </el-col>
@@ -47,6 +52,7 @@
                             <p>剩余：83</p>
                         </el-col>
                     </el-row>
+                    
                 </el-col>
             </el-row>
         </div>
