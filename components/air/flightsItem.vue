@@ -1,6 +1,6 @@
 <template>
   <div class="flight-item">
-    <div @click="handleInfos">
+    <div @click="isShow = !isShow">
       <!-- 显示的机票信息 -->
       <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
@@ -14,7 +14,7 @@
               <span>{{item.org_airport_name}}{{item.org_airport_quay}}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>2时20分</span>
+              <span>{{time}}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
               <strong>{{item.arr_time}}</strong>
@@ -60,6 +60,33 @@
 
 <script>
 export default {
+     // 计算属性，监听组件内容引用的实例的属性的变化
+     computed:{
+         time(){
+             const arrTime = this.item.arr_time.split(":");//14:10 = ["14","10"]
+             const depTime = this.item.dep_time.split(":");
+
+             //第二天
+             if(arrTime[0] < depTime){
+                 arrTime[0] += 24;
+             }
+
+             //到达时间的分钟
+             const end = arrTime[0]*60 + (+arrTime[1]);
+             //出发的时间
+             const start = depTime[0]*60 + (+depTime[1]);
+             //相隔的分钟
+             const dis = end - start;
+
+             //小时
+             const hours = Math.floor(dis/60);
+             //分钟
+             const min = dis%60;
+
+             return `${hours}小时${min}分钟`
+         }
+     },
+
   props: {
     // 数据
     item: {
@@ -77,9 +104,9 @@ export default {
   },
 
   methods:{
-      handleInfos(){
-          this.isShow = !this.isShow
-      }
+    //   handleInfos(){
+    //       this.isShow = !this.isShow
+    //   }
   }
 };
 </script>
