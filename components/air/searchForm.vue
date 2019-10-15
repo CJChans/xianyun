@@ -34,14 +34,17 @@
                 class="el-autocomplete"
                 ></el-autocomplete>
             </el-form-item>
+
             <el-form-item label="出发时间">
                 <!-- change 用户确认选择日期时触发 -->
                 <el-date-picker type="date" 
                 placeholder="请选择日期" 
                 style="width: 100%;"
+                v-model="form.departDate"
                 @change="handleDate">
                 </el-date-picker>
             </el-form-item>
+
             <el-form-item label="">
                 <el-button style="width:100%;" 
                 type="primary" 
@@ -50,6 +53,7 @@
                     搜索
                 </el-button>
             </el-form-item>
+
             <div class="reverse">
                 <span @click="handleReverse">换</span>
             </div>
@@ -58,6 +62,7 @@
 </template>
 
 <script>
+import moment from "moment"
 export default {
     data(){
         return {
@@ -96,7 +101,7 @@ export default {
         // 数组中的元素必须是一个对象，对象中必须要有value属性
         queryDepartSearch(value, cb){
            // 输入框为空时候不请求
-           console.log(value)
+          //  console.log(value)
             if(!value){
                 cb([]);
                return;
@@ -160,7 +165,8 @@ export default {
 
         // 确认选择日期时触发
         handleDate(value){
-           
+          //  console.log(value)
+          this.form.departDate = moment(value).format(`YYYY-MM-DD`)
         },
 
         // 触发和目标城市切换时触发
@@ -170,7 +176,38 @@ export default {
 
         // 提交表单是触发
         handleSubmit(){
-           console.log(this.form)
+          //  console.log(this.form)
+           // 自定义验证
+            const rules = {
+                departCity: {
+                    // message是错误的信息， value是对应表单中的值
+                    message: "请输入出发城市", value: this.form.departCity
+                },
+                destCity: {
+                    message: "请输入到达城市", value: this.form.destCity
+                },
+                departDate: {
+                    message: "请选择出发时间", value: this.form.departDate
+                }
+            }
+            // 循环rules这个对象，判断对象属性的value如果是空的，打印出message错误信息
+            let valid = true;
+            Object.keys(rules).forEach(v => {
+                // 只要有一次验证不通过，后台验证不用再执行
+                if(!valid) return;
+                const {message, value } = rules[v];
+                // 对象属性的value如果是空的
+                if(!value){
+                    this.$message.error(message)
+                    // 验证不通过
+                    valid = false;
+                }
+            })
+            if(!valid) return;
+            this.$router.push({
+                path: "/air/flights",
+                query: this.form
+            })
 
         }
     },
