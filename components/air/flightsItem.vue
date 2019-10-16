@@ -49,7 +49,7 @@
             <el-col :span="5" class="price">{{seat.org_settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
               
-              <nuxt-link :to="`/airorders/id=${item.id}&seat_xid=${seat.seat_xid}`">
+              <nuxt-link :to="`/air/order?id=${item.id}&seat_xid=${seat.seat_xid}`">
               <el-button type="warning" size="mini">选定</el-button>
               </nuxt-link>
 
