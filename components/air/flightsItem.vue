@@ -38,18 +38,22 @@
             type="flex"
             justify="space-between"
             align="middle"
-            v-for="(item,index) in item.seat_infos"
+            v-for="(seat,index) in item.seat_infos"
             :key="index"
             class="flight-sell"
           >
             <el-col :span="16" class="flight-sell-left">
-              <span>{{item.name}}</span>
-              | {{item.supplierName}}
+              <span>{{seat.name}}</span>
+              | {{seat.supplierName}}
             </el-col>
-            <el-col :span="5" class="price">{{item.org_settle_price}}</el-col>
+            <el-col :span="5" class="price">{{seat.org_settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
+              
+              <nuxt-link :to="`/airorders/id=${item.id}&seat_xid=${seat.seat_xid}`">
               <el-button type="warning" size="mini">选定</el-button>
-              <p>剩余：{{item.discount}}</p>
+              </nuxt-link>
+
+              <p>剩余：{{seat.discount}}</p>
             </el-col>
           </el-row>
         </el-col>
@@ -103,11 +107,9 @@ export default {
     };
   },
 
-  methods:{
-    //   handleInfos(){
-    //       this.isShow = !this.isShow
-    //   }
-  }
+ mounted(){
+   console.log(this.item)
+ }
 };
 </script>
 
