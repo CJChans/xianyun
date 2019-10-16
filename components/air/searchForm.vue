@@ -208,11 +208,15 @@ export default {
                     valid = false;
                 }
             })
+
             if(!valid) return;
             this.$router.push({
                 path: "/air/flights",
                 query: this.form
             })
+
+            //保存到store
+            this.$store.commit("air/setHistory",this.form)
 
         }
     },
