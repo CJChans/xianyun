@@ -61,6 +61,7 @@ export default {
                 // 初始值
                 flights: [],
                 info:{},
+                options:{},
             },
 
             info:{},
