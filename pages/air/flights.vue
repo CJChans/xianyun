@@ -5,9 +5,8 @@
             <!-- 顶部过滤列表 -->
             <div class="flights-content">
                 <!-- 过滤条件 -->
-                <div>
-                    
-                </div>
+                <FlightsFilters
+                :info="info"/>
                 
                 <!-- 航班头部布局 -->
                 <FlightsHeadList/>
@@ -19,7 +18,7 @@
                 :item="item"/>
 
                 <el-pagination
-                v-if="flightsData.length>0"
+                v-if="flightsData.flights.length>0"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="pageIndex"
@@ -29,7 +28,7 @@
                 :total="flightsData.total">
                 </el-pagination>
 
-                <div v-if="flightsData.length===0 && !loading" style="padding: 50px; text-align:center">
+                <div v-if="flightsData.flights.length===0 && !loading" style="padding: 50px; text-align:center">
                     暂无该航班的数据   请重新选择
                 </div>
             </div>
@@ -46,20 +45,24 @@
 
 import FlightsHeadList from "@/components/air/flightsHeadList"
 import FlightsItem from "@/components/air/flightsItem"
+import FlightsFilters from "@/components/air/flightsFilters"
 
 export default {
     components:{
         FlightsHeadList,
-        FlightsItem
+        FlightsItem,
+        FlightsFilters
     },
 
     data(){
         return {
             // 请求机票列表返回的总数据，包含了flights,info, options,total
-            flightsData:[],
+            flightsData: {
+                // 初始值
+                flights: []
+            },
 
-             // 从flights总列表数据中切割出来数组列表
-            dataList: [],
+            info:{},
 
              // 当前的页数
             pageIndex: 1,
@@ -71,6 +74,17 @@ export default {
         }
     },
 
+    computed: {
+        // 从flights总列表数据中切割出来数组列表
+        dataList(){
+            const arr = this.flightsData.flights.slice(
+                (this.pageIndex - 1) * this.pageSize, 
+                this.pageIndex * this.pageSize
+            )
+            return arr;
+        }
+    },
+
     mounted(){
         this.$axios({
             url:"/airs",
@@ -78,12 +92,12 @@ export default {
             params:this.$route.query
         }).then(res=>{
             console.log(res.data)
-            const {flights} = res.data
-            this.flightsData = flights
+             // 保存到机票的总数据
+            this.flightsData = res.data;         
+         
             //请求完毕
             this.loading = false;
-             // 第一页的数据
-            this.dataList = this.flightsData.slice(0, this.pageSize)
+          
         })
     },
 
@@ -92,22 +106,13 @@ export default {
         handleSizeChange(val){
             //切换条数
             this.pageSize = val
-            //重回第一条
-             this.dataList = this.flightsData.slice(0, this.pageSize)
 
         },
         // 页数切换时候触发, val是当前的页数
         handleCurrentChange(val){
              // 修改当前的页数
             this.pageIndex = val;
-            // 修改机票列表
-            // 0, 5
-            // 5, 10
-            // 10, 15
-            this.dataList = this.flightsData.slice(
-                (this.pageIndex - 1 ) * this.pageSize,
-                this.pageIndex * this.pageSize
-            )
+           
         }
     }
 }
