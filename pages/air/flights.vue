@@ -26,7 +26,7 @@
                 :page-sizes="[5, 10, 15, 20]"
                 :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="flightsData.total">
+                :total="total">
                 </el-pagination>
 
                 <div v-if="flightsData.flights.length===0 && !loading" style="padding: 50px; text-align:center">
@@ -80,6 +80,10 @@ export default {
 
             //判断是否在加载
             loading:true,
+
+            // 分页条数
+            total: 0
+
         }
     },
 
@@ -100,7 +104,7 @@ export default {
             //params是axios的get得参数
             params:this.$route.query
         }).then(res=>{
-            console.log(res.data)
+            console.log(res)
              // 保存到机票的总数据
             this.flightsData = res.data;
             
@@ -109,6 +113,7 @@ export default {
          
             //请求完毕
             this.loading = false;
+            this.total = this.flightsData.total
           
         })
     },
@@ -129,7 +134,11 @@ export default {
 
         // 给过滤组件修改flightsData的flights
         setDataList(arr){
+            // 根据过滤条件修改列表
             this.flightsData.flights = arr
+            // 修改分页的初始值
+            this.total = arr.length;
+            this.pageIndex = 1;
         }
     }
 }
