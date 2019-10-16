@@ -6,7 +6,8 @@
             <div class="flights-content">
                 <!-- 过滤条件 -->
                 <FlightsFilters
-                :data="flightsData"/>
+                :data="flightsData"
+                @setDataList="setDataList"/>
                 
                 <!-- 航班头部布局 -->
                 <FlightsHeadList/>
@@ -115,6 +116,11 @@ export default {
              // 修改当前的页数
             this.pageIndex = val;
            
+        },
+
+        // 给过滤组件修改flightsData的flights
+        setDataList(arr){
+            this.flightsData.flights = arr
         }
     }
 }
