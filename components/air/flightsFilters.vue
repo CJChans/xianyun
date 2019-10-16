@@ -94,12 +94,30 @@ export default {
     methods: {
         // 选择机场时候触发
         handleAirport(value){
-            
+            // 根据value过滤列表，只保留当前符合条件的机票列表
+             const arr = this.data.flights.filter(item => {
+                 return item.org_airport_name === value;
+             })
+
+             //修改列表数据
+             this.$emit("setDataList",arr)
         },
 
         // 选择出发时间时候触发
         handleFlightTimes(value){
-            
+            // console.log(value)
+            //  数组中第一项是开始时间，第二项是终止时间
+            const arr = value.split(",");//['6','12']
+
+            const arr2 = this.data.flights.filter(v => {
+                //出发时间的小时
+                const start  = +v.dep_time.split(":")[0];
+                // 比较航班出发时间是否在选中的时间段内
+                return start >= +arr[0] && start < +arr[1];
+            })
+
+            //通过emit发射事件给父组件来修改列表数据
+            this.$emit("setDataList",arr2)
         },
 
          // 选择航空公司时候触发
