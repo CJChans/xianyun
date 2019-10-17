@@ -42,9 +42,13 @@
         <div class="air-column">
             <h2>保险</h2>
             <div>
-                <div class="insurance-item">
-                    <el-checkbox 
-                    label="航空意外险：￥30/份×1  最高赔付260万" 
+                <div class="insurance-item"
+                v-for="(item,index) in detail.insurances"
+                :key="index"
+                >
+                    <el-checkbox
+                    @change="handleChange(item.id)" 
+                    :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}万`" 
                     border>
                     </el-checkbox> 
                 </div>
@@ -84,21 +88,28 @@ export default {
             users:[{
                 username:"",
                 id:"",
-            }]
+            }],
+            detail:{},
+            // 保险id的集合
+            insurances: []
         }
     },
     methods: {
         // 添加乘机人
         handleAddUsers(){
              // 给user中添加多一项
-             console.log(123)
-           this.users = [
-        ...this.users, 
-        {
-            username: "",
-            id: "",
-        }
-    ];
+            //  console.log(123)
+    //        this.users = [
+    //     ...this.users, 
+    //     {
+    //         username: "",
+    //         id: "",
+    //     }
+    // ];
+        this.users.push({
+            username:"",
+                id:"",
+        })
         },
         
         // 移除乘机人
@@ -114,7 +125,34 @@ export default {
         // 提交订单
         handleSubmit(){
             
+        },
+
+        // 选择保险时候触发，// id就是保险的id
+        handleChange(id){
+            // 需要判断保险数组中是否存在，如果存在要删除，不存在就添加
+            const index = this.insurances.indexOf(id);
+            if(index > -1){
+                this.insurances.splice(index,1)
+            }else{
+                 this.insurances.push(id);
+            }
+           
+            // console.log(this.insurances)
         }
+    },
+
+    mounted(){
+        const { id,seat_id} = this.$route.query
+        this.$axios({
+            url:"/airs/"+id,
+            params:{
+                seat_id
+            }
+        }).then(res=>{
+            console.log(res)
+            this.detail = res.data
+
+        })
     }
 }
 </script>
