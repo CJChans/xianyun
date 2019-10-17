@@ -122,8 +122,16 @@ export default {
         },
         
         // 发送手机验证码
-        handleSendCaptcha(){
-            
+       async handleSendCaptcha(){
+            // 判断是否有手机号码
+            if(!this.contactPhone){
+                this.$message.error("手机号码不能为空");
+                return;
+            }
+            //dispatch返回的是promise，用于提交表单的数据
+            const res = await this.$store.dispatch("user/sendCaptcha",this.contactPhone)
+            this.$message.success(`当前的验证码:` + res.data.code)
+            // console.log(res)
         },
 
         // 提交订单

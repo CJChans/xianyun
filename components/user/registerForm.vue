@@ -105,16 +105,20 @@ export default {
                 this.$message.error("请输入用户名手机")
                 return;
             }
-            const res=await this.$axios({
-                url:"/captchas",
-                method:"post",
-                data:{
-                    tel:this.form.username
-                }
-            });
-            // console.log(res.data)
-            const {data} = res;
-            this.$message.success(`当前的手机验证码为：${data.code}`)
+            // const res=await this.$axios({
+            //     url:"/captchas",
+            //     method:"post",
+            //     data:{
+            //         tel:this.form.username
+            //     }
+            // });
+            // // console.log(res.data)
+            // const {data} = res;
+            // this.$message.success(`当前的手机验证码为：${data.code}`)
+
+             //dispatch返回的是promise，用于提交表单的数据
+            const res = await this.$store.dispatch("user/sendCaptcha",this.form.username)
+            this.$message.success(`当前的验证码:` + res.data.code)
         },
 
 
