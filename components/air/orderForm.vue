@@ -60,11 +60,11 @@
             <div class="contact">
                 <el-form label-width="60px">
                     <el-form-item label="姓名">
-                        <el-input></el-input>
+                        <el-input v-model="contactName"></el-input>
                     </el-form-item>
 
                     <el-form-item label="手机">
-                        <el-input placeholder="请输入内容">
+                        <el-input placeholder="请输入内容" v-model="contactPhone">
                             <template slot="append">
                             <el-button @click="handleSendCaptcha">发送验证码</el-button>
                             </template>
@@ -72,7 +72,7 @@
                     </el-form-item>
 
                     <el-form-item label="验证码">
-                        <el-input></el-input>
+                        <el-input v-model="captcha"></el-input>
                     </el-form-item>
                 </el-form>   
                 <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
@@ -91,7 +91,11 @@ export default {
             }],
             detail:{},
             // 保险id的集合
-            insurances: []
+            insurances: [],
+            contactName:"",//联系人名字
+            contactPhone:"",//联系人电话
+            invoice:false,//发票写死
+            captcha:"",//验证码
         }
     },
     methods: {
@@ -124,7 +128,16 @@ export default {
 
         // 提交订单
         handleSubmit(){
-            
+            const data={
+                users : this.user,
+                insurance:this.insurances,
+                contactName:this.contactName,
+                contactPhone:this.contactPhone,
+                invoice:this.invoice,
+                seat_id:this.$route.query.seat_id,
+                id:this.$route.query.id,
+            }
+            console.log(data)
         },
 
         // 选择保险时候触发，// id就是保险的id
