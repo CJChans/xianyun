@@ -17,9 +17,10 @@ export default function({ $axios, redirect }) {
 
         }
 
-        if (statusCode === 403) {
+        if (statusCode === 403 || statusCode === 401) {
             // 路由重定向的方法
-            context.redirect("/user/login");
+            Message.warning({ message: "请先登录" });
+            redirect("/user/login");
         }
     })
 }
