@@ -145,7 +145,15 @@ export default {
                 seat_id:this.$route.query.seat_id,
                 id:this.$route.query.id,
             }
-            console.log(data)
+            // console.log(data)
+             // 提交订单接口
+            this.$axios({
+                url: "/airorders",
+                method: "POST",
+                data
+            }).then(res => {
+                console.log(res)
+            })
         },
 
         // 选择保险时候触发，// id就是保险的id
