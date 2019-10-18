@@ -48,9 +48,8 @@
             </el-col>
             <el-col :span="5" class="price">{{seat.org_settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
-              
               <nuxt-link :to="`/air/order?id=${item.id}&seat_xid=${seat.seat_xid}`">
-              <el-button type="warning" size="mini">选定</el-button>
+                <el-button type="warning" size="mini">选定</el-button>
               </nuxt-link>
 
               <p>剩余：{{seat.discount}}</p>
@@ -64,34 +63,14 @@
 
 <script>
 //导入计算方法
-import {computeTime} from "@/users/users"
+import { computeTime } from "@/untils/untils";
 export default {
-     // 计算属性，监听组件内容引用的实例的属性的变化
-     computed:{
-         time(){
-             const arrTime = this.item.arr_time.split(":");//14:10 = ["14","10"]
-             const depTime = this.item.dep_time.split(":");
-
-             //第二天
-             if(arrTime[0] < depTime){
-                 arrTime[0] += 24;
-             }
-
-             //到达时间的分钟
-             const end = arrTime[0]*60 + (+arrTime[1]);
-             //出发的时间
-             const start = depTime[0]*60 + (+depTime[1]);
-             //相隔的分钟
-             const dis = end - start;
-
-             //小时
-             const hours = Math.floor(dis/60);
-             //分钟
-             const min = dis%60;
-
-             return computeTime(this.item.arr_time,this.item.dep_time)
-         }
-     },
+  // 计算属性，监听组件内容引用的实例的属性的变化
+  computed: {
+    time() {
+      return computeTime(this.item.arr_time, this.item.dep_time);
+    }
+  },
 
   props: {
     // 数据
@@ -109,9 +88,9 @@ export default {
     };
   },
 
- mounted(){
-   console.log(this.item)
- }
+  mounted() {
+    console.log(this.item);
+  }
 };
 </script>
 

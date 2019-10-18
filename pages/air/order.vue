@@ -1,36 +1,52 @@
 <template>
-    <div class="container">
-        <el-row type="flex" justify="space-between">
-            <!-- 订单表单 -->
-            <OrderForm/>
+  <div class="container">
+    <el-row type="flex" justify="space-between">
+      <!-- 订单表单 -->
+      <OrderForm @getDetail="getDetail" />
 
-            <!-- 侧边栏 -->
-            <div class="aside">
-                          
-            </div>
-        </el-row>
-    </div>
+      <!-- 侧边栏 -->
+      <OrderAside :data="detail" />
+    </el-row>
+  </div>
 </template>
 
 <script>
-import OrderForm from "@/components/air/orderForm"
+import OrderForm from "@/components/air/orderForm";
+import OrderAside from "@/components/air/orderAside";
 export default {
-    components:{
-        OrderForm
+  components: {
+    OrderForm,
+    OrderAside
+  },
+  data() {
+    return {
+      detail: {
+        // 默认值
+        seat_infos: {}
+      }
+    };
+  },
+  methods: {
+    getDetail(detail) {
+      this.detail = detail;
     }
-}
+  },
+  mounted() {
+    console.log(this.detail);
+  }
+};
 </script>
 
 <style lang="less" scoped>
-    .container{
-        width:1000px;
-        margin:20px auto;
-    }
-    
-    /*aside*/
-    .aside{
-        width: 350px;
-        height: fit-content;
-        border:1px #ddd solid;
-    }
+.container {
+  width: 1000px;
+  margin: 20px auto;
+}
+
+/*aside*/
+.aside {
+  width: 350px;
+  height: fit-content;
+  border: 1px #ddd solid;
+}
 </style>
