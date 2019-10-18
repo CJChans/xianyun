@@ -37,7 +37,7 @@
     </el-row>
     <el-row type="flex" justify="space-between" align="middle" class="info-bar">
       <span>应付总额：</span>
-      <span class="price">￥</span>
+      <span class="price">￥{{allPrice}}</span>
     </el-row>
   </div>
 </template>
@@ -47,10 +47,15 @@
 import { computeTime } from "@/untils/untils";
 export default {
   props: {
-    // 组件接受的是data属性
+    // 组件接收的是data属性
     data: {
       type: Object,
       default:{}
+    },
+
+    allPrice:{
+        type:Number,
+        default:0,
     }
   },
   computed: {
