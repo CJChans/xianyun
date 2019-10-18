@@ -63,6 +63,8 @@
 </template>
 
 <script>
+//导入计算方法
+import {computeTime} from "@/users/users"
 export default {
      // 计算属性，监听组件内容引用的实例的属性的变化
      computed:{
@@ -87,7 +89,7 @@ export default {
              //分钟
              const min = dis%60;
 
-             return `${hours}小时${min}分钟`
+             return computeTime(this.item.arr_time,this.item.dep_time)
          }
      },
 
