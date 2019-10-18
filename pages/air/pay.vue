@@ -32,23 +32,51 @@ export default {
     data(){
         return{
             //二维码页面详情
-            order:{}
+            order:{},
+             // 定时器
+            timer: null
         }
     },
     mounted(){
         // 订单id
         const {id} = this.$route.query;
+        setTimeout(async()=>{
         // 请求订单详情
-        this.$axios({
+          const res =  await this.$axios({
             url: "/airorders/" + id,
             headers: {
                 Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
             }
-        }).then(res => {
+        })
             console.log(res)
             this.order = res.data;
             new QRCode(document.getElementById("qrcode"), this.order.payInfo.code_url);
-        })
+
+            //查询付款状态
+            this.timer = setInterval(async() => {
+                const res = await this.$axios({
+                    url:"/airorders/checkpay",
+                    method:"post",
+                    headers: {
+                            Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+                        },
+                    data:{
+                        id:this.$route.query.id,
+                        nonce_str:this.order.price,
+                        out_trade_no:this.order.orderNo
+                    }
+                })
+                console.log(res,66666666666)
+                //获取支付状态
+                const statusTxt = res.data.statusTxt
+                //支付完成后判断
+                if(statusTxt === "支付完成"){
+                    this.$message.success(statusTxt)
+                    clearInterval(this.timer)
+                }
+            }, 3000);
+
+        },10)
     }
 }
 </script>
