@@ -137,15 +137,16 @@ export default {
         // 提交订单
         handleSubmit(){
             const data={
-                users : this.user,
+                users : this.users,
                 insurance:this.insurances,
                 contactName:this.contactName,
                 contactPhone:this.contactPhone,
                 invoice:this.invoice,
-                seat_id:this.$route.query.seat_id,
+                captcha: this.captcha,
+                seat_id:this.$route.query.seat_xid,
                 id:this.$route.query.id,
             }
-            // console.log(data)
+            console.log(data)
              // 提交订单接口
             this.$axios({
                 url: "/airorders",
@@ -157,6 +158,8 @@ export default {
                 }
             }).then(res => {
                 console.log(res)
+                // const id = res.data.id
+                // console.log(id,"++++++++++++++")
             })
         },
 
