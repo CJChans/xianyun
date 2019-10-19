@@ -148,7 +148,7 @@ export default {
           Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
         }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         const id = res.data.data.id;
         this.$router.push({
           path: "/air/pay",
